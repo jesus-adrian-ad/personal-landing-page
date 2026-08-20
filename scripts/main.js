@@ -68,7 +68,11 @@
 
     const isOpen = () => navToggle.getAttribute('aria-expanded') === 'true';
 
-    navToggle.addEventListener('click', () => setMenu(!isOpen()));
+    navToggle.addEventListener('click', () => {
+      const open = !isOpen();
+      setMenu(open);
+      if (open) navMenu.querySelector('a')?.focus();
+    });
 
     // Al elegir una sección el menú estorba: se cierra solo.
     navMenu.addEventListener('click', (event) => {
@@ -90,24 +94,61 @@
 
     // Al pasar a escritorio el panel desaparece por CSS; se limpia el
     // estado para que el botón no quede anunciado como abierto.
-    window.matchMedia('(min-width: 901px)').addEventListener('change', (event) => {
+    const desktop = window.matchMedia('(min-width: 901px)');
+    const onBreakpoint = (event) => {
       if (event.matches) setMenu(false);
-    });
+    };
+
+    if (desktop.addEventListener) {
+      desktop.addEventListener('change', onBreakpoint);
+    } else if (desktop.addListener) {
+      desktop.addListener(onBreakpoint);   // Safari < 14
+    }
   }
 
   /* -------------------------------------------------------------------
-     Navbar: sombra al separarse del borde superior.
+     Navbar: sombra al separarse del borde superior, y se aparta al bajar.
+
+     Bajando estorba, subiendo hace falta. Se esconde al desplazarse hacia
+     abajo y vuelve en cuanto subes, sin tener que llegar al inicio.
+
+     El trabajo va dentro de requestAnimationFrame: el evento de scroll se
+     dispara muchas más veces de las que hay frames, y así solo se toca el
+     DOM una vez por frame.
      ------------------------------------------------------------------- */
 
-  const nav = document.querySelector('nav');
+  // Es el <header> el que se pega y se desplaza, no el <nav> de dentro.
+  const navBar = document.querySelector('header');
 
-  if (nav) {
-    const syncNavShadow = () => {
-      nav.classList.toggle('is-scrolled', window.scrollY > 8);
+  if (navBar) {
+    const HIDE_AFTER = 160;   // margen para no esconderlo nada más arrancar
+    let lastY = window.scrollY;
+    let ticking = false;
+
+    const syncNav = () => {
+      const y = Math.max(window.scrollY, 0);
+
+      navBar.classList.toggle('is-scrolled', y > 8);
+
+      // Con el menú desplegado abierto, esconder la barra se lo llevaría por
+      // delante. Mientras esté abierto, la barra se queda.
+      const menuOpen = navToggle && navToggle.getAttribute('aria-expanded') === 'true';
+      const goingDown = y > lastY;
+
+      navBar.classList.toggle('is-hidden', goingDown && y > HIDE_AFTER && !menuOpen);
+
+      lastY = y;
+      ticking = false;
     };
 
-    syncNavShadow();
-    window.addEventListener('scroll', syncNavShadow, { passive: true });
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(syncNav);
+    };
+
+    syncNav();
+    window.addEventListener('scroll', onScroll, { passive: true });
   }
 
   /* -------------------------------------------------------------------

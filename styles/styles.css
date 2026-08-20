@@ -1,6 +1,23 @@
 /* =====================================================================
    Adrián Alcocer — Sitio personal
-   Vamos construyendo esta hoja de estilos bloque por bloque.
+   Hoja única, organizada en bloques numerados. Cada bloque lleva sus
+   propias media queries al final, en vez de amontonarlas todas aquí.
+
+   BREAKPOINTS — cuatro, y cada uno responde a una razón concreta:
+
+     767px   Teléfono. Cae el globo del selector de idioma y los
+             objetivos táctiles suben a 40px.
+     900px   El navbar pasa a menú hamburguesa y todo lo de dos
+             columnas colapsa a una. El corte es 900 y no 767 porque
+             los enlaces en español ("Experiencia", "Proyectos"…)
+             suman 772px y desbordarían entre medias.
+     1600px  Primer escalón de pantalla grande: sube el contenedor a
+             1280px y la tipografía un punto.
+     2100px  Segundo escalón: contenedor a 1440px. Sin esto, en un
+             monitor de 2560px el contenido ocupa el 44% del ancho.
+
+   No están en custom properties porque las variables CSS no funcionan
+   dentro de @media, y meter un preprocesador solo por esto no compensa.
    ===================================================================== */
 
 
@@ -29,6 +46,31 @@ ul {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* Salta el navbar para quien navega con teclado o lector de pantalla.
+   Fuera de pantalla hasta recibir foco: visible solo cuando hace falta. */
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 100;
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--bg);
+  background: var(--ink);
+  border-radius: var(--space-2);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* El <main> recibe foco al usar el enlace, pero no debe dibujar contorno. */
+main:focus {
+  outline: none;
 }
 
 
@@ -79,7 +121,7 @@ a {
   --dur-normal: 0.35s;
   --dur-slow:   0.75s;
 
-  /* Color — modo claro (ver BLOQUE 1.2 para el oscuro) */
+  /* Color — modo claro (ver BLOQUE 2 para el oscuro) */
   color-scheme: light;
 
   --bg:        #ffffff;
@@ -106,7 +148,7 @@ a {
 
 
 /* =====================================================================
-   BLOQUE 1.2 — Modo oscuro
+   BLOQUE 11 — Modo oscuro
    Tres estados: sin elegir nada manda el sistema; data-theme="dark" y
    data-theme="light" son la elección explícita del usuario y ganan sobre
    el sistema en ambos sentidos. Solo se redefinen tokens de color: ni un
@@ -149,7 +191,7 @@ a {
 
 
 /* =====================================================================
-   BLOQUE 1.5 — Tipografía base
+   BLOQUE 12 — Tipografía base
    Inter para el texto corrido, Montserrat para la jerarquía de títulos.
    ===================================================================== */
 
@@ -182,7 +224,7 @@ p {
 
 
 /* =====================================================================
-   BLOQUE 1.7 — Layout de sección
+   BLOQUE 13 — Layout de sección
    Ancho, centrado y ritmo vertical compartidos por todas las secciones.
    Cada bloque posterior sobrescribe solo lo que necesite (el hero y el
    contact llevan más aire por ser la entrada y el cierre de la página).
@@ -225,7 +267,7 @@ p {
 
 
 /* =====================================================================
-   BLOQUE 1.8 — Pantallas grandes
+   BLOQUE 14 — Pantallas grandes
    En un monitor de 2560px el contenedor de 1120px deja el contenido en
    el 44% del ancho y el resto en márgenes. Se escalan tokens en dos
    pasos; ninguna regla de componente cambia.
@@ -271,22 +313,34 @@ p {
 
 
 /* =====================================================================
-   BLOQUE 2 — Navbar
+   BLOQUE 11 — Navbar
    ===================================================================== */
 
-nav {
+/* El sticky vive en <header>, no en <nav>.
+
+   Un elemento sticky se pega dentro de su bloque contenedor, y el de <nav>
+   es <header>: como el header mide justo lo que mide la barra, no hay
+   recorrido donde pegarse y se iría con el scroll. El sticky tiene que
+   estar en el elemento cuyo padre sí tiene altura — aquí, <body>. */
+header {
   position: sticky;
   top: 0;
   z-index: 10;
-  transition: box-shadow 0.2s ease;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  transition:
+    box-shadow var(--dur-normal) var(--ease-out-soft),
+    transform  var(--dur-normal) var(--ease-out-expo);
+}
+
+nav {
+  position: relative;   /* referencia del panel desplegable en móvil */
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: var(--nav-height);
   padding-left: max(var(--space-4), env(safe-area-inset-left));
   padding-right: max(var(--space-4), env(safe-area-inset-right));
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
 }
 
 .logo {
@@ -466,7 +520,7 @@ section {
 
 
 /* =====================================================================
-   BLOQUE 3 — Hero
+   BLOQUE 12 — Hero
    Dos columnas: texto a la izquierda, foto a la derecha.
    ===================================================================== */
 
@@ -608,7 +662,7 @@ section {
 
 
 /* =====================================================================
-   BLOQUE 4 — Tech Stack
+   BLOQUE 13 — Tech Stack
    Cuatro tarjetas (una por categoría) con chips de logo + nombre.
    Iconos de devicon (https://github.com/devicons/devicon), servidos
    desde assets/icons/tech/.
@@ -673,17 +727,23 @@ section {
 }
 
 /* devicon dibuja el icono de gRPC en negro sólido, invisible sobre fondo
-   oscuro. En ese modo se cambia por la variante blanca del mismo set.
-   Es el único logo del stack sin colores propios. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .chip img[src$="grpc.svg"] {
-    content: url("../assets/icons/tech/grpc-dark.svg");
-  }
+   oscuro, y publica una variante blanca para ese caso. Es el único logo del
+   stack sin colores propios.
+
+   Se alternan dos <img> con display en vez de intercambiar el archivo con
+   `content: url()`: esa propiedad sobre elementos reemplazados no tiene
+   soporte parejo entre navegadores, y si falla el icono queda invisible. */
+.chip .icon-dark {
+  display: none;
 }
 
-:root[data-theme="dark"] .chip img[src$="grpc.svg"] {
-  content: url("../assets/icons/tech/grpc-dark.svg");
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .chip .icon-light { display: none; }
+  :root:not([data-theme="light"]) .chip .icon-dark  { display: block; }
 }
+
+:root[data-theme="dark"] .chip .icon-light { display: none; }
+:root[data-theme="dark"] .chip .icon-dark  { display: block; }
 
 /* Tecnologías sin logo propio: van como texto suelto bajo los chips. */
 .chips-extra {
@@ -710,7 +770,7 @@ section {
 
 
 /* =====================================================================
-   BLOQUE 5 — Experience
+   BLOQUE 14 — Experience
    Un empleador, tres puestos anidados en una línea de tiempo.
    La progresión Help Desk → Backend es el mensaje: los puestos se
    indentan bajo la empresa, no se aplanan en tres bloques sueltos.
@@ -830,7 +890,7 @@ section {
 
 
 /* =====================================================================
-   BLOQUE 5.5 — Projects
+   BLOQUE 10 — Projects
    Tarjeta ancha a dos columnas: descripción y stack a la izquierda,
    la superficie de la API como vista previa a la derecha. Para pasar a
    un grid de varias tarjetas basta con envolver los .project en un
@@ -894,21 +954,9 @@ section {
   overflow: hidden;
 }
 
-.preview-head {
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--panel-border);
-}
-
-.preview-title {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--panel-ink-muted);
-}
-
 .endpoints {
   display: grid;
   gap: var(--space-2);
-  margin-top: var(--space-3);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
 }
@@ -936,15 +984,6 @@ section {
 .method-put    { color: var(--method-put); }
 .method-delete { color: var(--method-delete); }
 
-.preview-foot {
-  margin-top: var(--space-4);
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--panel-border);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--panel-ink-muted);
-}
-
 
 /* --- Projects responsive --- */
 
@@ -963,7 +1002,7 @@ section {
 
 
 /* =====================================================================
-   BLOQUE 6 — About
+   BLOQUE 11 — About
    Bio a la izquierda; Education e Idiomas como fichas a la derecha.
    Las etiquetas reutilizan el estilo de .stack-card dt (Bloque 4).
    ===================================================================== */
@@ -1050,7 +1089,7 @@ section {
 
 
 /* =====================================================================
-   BLOQUE 7 — Contact
+   BLOQUE 12 — Contact
    Tres filas etiqueta + valor, cada una enlazable por completo.
    Los iconos van inline para poder heredar el color con currentColor.
    ===================================================================== */
@@ -1139,7 +1178,7 @@ section {
 
 
 /* =====================================================================
-   BLOQUE 8 — Movimiento
+   BLOQUE 13 — Movimiento
    Cuatro piezas: entrada del hero, revelado de secciones, estados de los
    elementos interactivos y el indicador de sección activa en el navbar.
 
@@ -1161,6 +1200,18 @@ section {
   }
 }
 
+/* Igual que rise pero sin tocar la opacidad, para el elemento LCP. */
+@keyframes rise-opaque {
+  from {
+    transform: translateY(22px);
+    filter: blur(4px);
+  }
+  to {
+    transform: none;
+    filter: blur(0);
+  }
+}
+
 /* --- Hero: entra solo, sin JS ---
    Va con @keyframes y no con el observador de scroll porque está sobre la
    línea de flotación: el CSS ya está aplicado en el primer pintado, así
@@ -1170,6 +1221,15 @@ section {
   .hero-text > *,
   .hero-picture {
     animation: rise var(--dur-slow) var(--ease-out-expo) backwards;
+  }
+
+  /* El h1 y la foto son los candidatos a elemento LCP, y Chrome no cuenta
+     como pintado nada con opacity 0: un fundido de entrada retrasa la
+     métrica lo que dure. Entran solo con desplazamiento y desenfoque, que
+     es donde vive el movimiento de todas formas. */
+  .hero-text > h1,
+  .hero-picture {
+    animation-name: rise-opaque;
   }
 
   .hero-text > :nth-child(1) { animation-delay: 0.06s; }
@@ -1186,7 +1246,14 @@ section {
 .reveal {
   opacity: 0;
   transform: translateY(22px);
-  filter: blur(6px);
+  filter: blur(4px);
+}
+
+/* Desenfocar superficies grandes obliga a rasterizar en cada frame y se
+   nota en móviles de gama baja. Las tarjetas entran sin blur. */
+.project.reveal,
+.job.reveal {
+  filter: none;
 }
 
 .reveal.is-visible {
@@ -1202,8 +1269,14 @@ section {
 
 /* --- Navbar al hacer scroll --- */
 
-nav.is-scrolled {
+header.is-scrolled {
   box-shadow: 0 1px 12px var(--shadow);
+}
+
+/* Se aparta al bajar. El borde inferior entra en el cálculo para que no
+   quede una línea asomando. */
+header.is-hidden {
+  transform: translateY(calc(-100% - 1px));
 }
 
 /* --- Sección activa en el navbar ---
@@ -1324,6 +1397,10 @@ nav.is-scrolled {
     scroll-behavior: auto;   /* el scroll animado también es movimiento */
   }
 
+  header {
+    transition: none;
+  }
+
   .reveal,
   .reveal.is-visible {
     opacity: 1;
@@ -1342,4 +1419,29 @@ nav.is-scrolled {
   .theme-toggle:hover .theme-icon {
     transform: none;
   }
+}
+
+
+/* =====================================================================
+   BLOQUE 14 — Footer
+   Cierre discreto: la página terminaba de golpe en una lista de enlaces.
+   ===================================================================== */
+
+footer {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding: var(--space-5) var(--space-4);
+  padding-left: max(var(--space-4), env(safe-area-inset-left));
+  padding-right: max(var(--space-4), env(safe-area-inset-right));
+  padding-bottom: max(var(--space-5), env(safe-area-inset-bottom));
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  justify-content: space-between;
+  align-items: baseline;
+
+  border-top: 1px solid var(--border);
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
 }

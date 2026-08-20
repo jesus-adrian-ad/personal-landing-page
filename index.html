@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Jesus Adrian Alcocer Donez</title>
+    <title>Adrián Alcocer — Backend Developer (Java, Spring, C#)</title>
     <meta name="description"
         content="Backend developer in Monterrey, Mexico. REST and GraphQL APIs in Java and Spring, AI integrations, and deployments to AWS with Docker and Kubernetes.">
 
@@ -21,11 +21,36 @@
             }
         })();
     </script>
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="author" content="Adrián Alcocer">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1216" media="(prefers-color-scheme: dark)">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="profile">
+    <meta property="og:site_name" content="Adrián Alcocer">
+    <meta property="og:title" content="Adrián Alcocer — Backend Developer (Java, Spring, C#)">
+    <meta property="og:description" content="Backend developer in Monterrey, Mexico. REST and GraphQL APIs in Java and Spring, AI integrations, and deployments to AWS with Docker and Kubernetes.">
+    <meta property="og:url" content="https://jesus-adrian-ad.github.io/personal-landing-page/">
+    <meta property="og:image" content="https://jesus-adrian-ad.github.io/personal-landing-page/assets/images/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Adrián Alcocer, Backend Developer — Java and C#">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="es_MX">
+    <meta property="profile:first_name" content="Adrián">
+    <meta property="profile:last_name" content="Alcocer">
+
+    <!-- Formato de tarjeta grande. Título, descripción e imagen los
+         toma de Open Graph, así que no se repiten aquí. -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="canonical" href="https://jesus-adrian-ad.github.io/personal-landing-page/">
 
     <!-- Versiones por idioma -->
-    <link rel="alternate" hreflang="en" href="./index.html">
-    <link rel="alternate" hreflang="es" href="./index-es.html">
-    <link rel="alternate" hreflang="x-default" href="./index.html">
+    <link rel="alternate" hreflang="en" href="https://jesus-adrian-ad.github.io/personal-landing-page/">
+    <link rel="alternate" hreflang="es" href="https://jesus-adrian-ad.github.io/personal-landing-page/index-es.html">
+    <link rel="alternate" hreflang="x-default" href="https://jesus-adrian-ad.github.io/personal-landing-page/">
 
     <!-- Tab Icon -->
     <link rel="icon" href="./assets/icons/yisoft_favicon_64.png" type="image/x-icon">
@@ -37,148 +62,253 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Montserrat:wght@600;700&display=swap"
         rel="stylesheet">
 
+    <link rel="preload" as="image" type="image/webp" href="./assets/images/adrian_hero.webp" fetchpriority="high">
+
     <!-- Styles Refference -->
     <link rel="stylesheet" href="./styles/styles.css">
+    <!-- Datos estructurados -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "name": "Adrián Alcocer",
+          "alternateName": "Jesús Adrián Alcocer Dónez",
+          "jobTitle": "Backend Developer",
+          "email": "mailto:jadriandev10@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Monterrey",
+            "addressRegion": "Nuevo León",
+            "addressCountry": "MX"
+          },
+          "worksFor": {
+            "@type": "Organization",
+            "name": "Banco BASE — Grupo Financiero Base"
+          },
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "Universidad Autónoma de Nuevo León",
+            "alternateName": "UANL"
+          },
+          "knowsAbout": [
+            "Java",
+            "Spring",
+            "Spring WebFlux",
+            "C#",
+            ".NET",
+            "REST APIs",
+            "GraphQL",
+            "gRPC",
+            "SOAP",
+            "Microservices",
+            "PostgreSQL",
+            "SQL Server",
+            "Redis",
+            "Docker",
+            "Kubernetes",
+            "Amazon Web Services",
+            "Jenkins",
+            "CI/CD"
+          ],
+          "knowsLanguage": [
+            {
+              "@type": "Language",
+              "name": "Spanish",
+              "alternateName": "es"
+            },
+            {
+              "@type": "Language",
+              "name": "English",
+              "alternateName": "en"
+            }
+          ],
+          "sameAs": [
+            "https://linkedin.com/in/jesus-adrian-alcocer-dnz",
+            "https://github.com/jesus-adrian-ad"
+          ],
+          "@id": "https://jesus-adrian-ad.github.io/personal-landing-page/#adrian",
+          "url": "https://jesus-adrian-ad.github.io/personal-landing-page/",
+          "image": "https://jesus-adrian-ad.github.io/personal-landing-page/assets/images/og-image.jpg"
+        },
+        {
+          "@type": "WebSite",
+          "name": "Adrián Alcocer",
+          "inLanguage": "en",
+          "author": {
+            "@id": "https://jesus-adrian-ad.github.io/personal-landing-page/#adrian"
+          },
+          "publisher": {
+            "@id": "https://jesus-adrian-ad.github.io/personal-landing-page/#adrian"
+          },
+          "@id": "https://jesus-adrian-ad.github.io/personal-landing-page/#website",
+          "url": "https://jesus-adrian-ad.github.io/personal-landing-page/"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "name": "Reactive Products API",
+          "description": "Non-blocking REST API built with Spring WebFlux functional endpoints and Spring Data R2DBC over PostgreSQL.",
+          "codeRepository": "https://github.com/jesus-adrian-ad/crud-spring-webflux",
+          "programmingLanguage": [
+            "Java"
+          ],
+          "runtimePlatform": "Spring WebFlux",
+          "author": {
+            "@id": "https://jesus-adrian-ad.github.io/personal-landing-page/#adrian"
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body>
-    <nav>
-        <a href="#" class="logo">{ Adrian }</a>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header>
+        <nav>
+        <a href="./" class="logo">{ Adrian }</a>
         <div class="nav-right">
-            <ul id="nav-menu">
-                <li><a href="#stack">Stack</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <a class="lang-switch" href="./index-es.html" hreflang="es" lang="es"
-                title="Ver esta página en español">
-                <svg class="lang-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="1.6" aria-hidden="true" focusable="false">
-                    <circle cx="12" cy="12" r="9" />
-                    <path d="M3 12h18" />
-                    <path d="M12 3c2.5 2.7 2.5 15.3 0 18" />
-                    <path d="M12 3c-2.5 2.7-2.5 15.3 0 18" />
-                </svg>
-                ES
-            </a>
-            <button class="theme-toggle" type="button" aria-label="Switch between light and dark mode" title="Switch between light and dark mode">
-                <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
-                    stroke-linejoin="round" aria-hidden="true" focusable="false">
-                    <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" />
-                </svg>
-                <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
-                    stroke-linejoin="round" aria-hidden="true" focusable="false">
-                    <circle cx="12" cy="12" r="4.2" />
-                    <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2" />
-                    <path d="m4.9 4.9 1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4" />
-                </svg>
-            </button>
-            <button class="nav-toggle" type="button" aria-label="Open navigation menu"
-                aria-expanded="false" aria-controls="nav-menu">
-                <svg class="nav-icon nav-icon-menu" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                    aria-hidden="true" focusable="false">
-                    <path d="M4 7h16M4 12h16M4 17h16" />
-                </svg>
-                <svg class="nav-icon nav-icon-close" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                    aria-hidden="true" focusable="false">
-                    <path d="M6 6l12 12M18 6L6 18" />
-                </svg>
-            </button>
+                <button class="nav-toggle" type="button" aria-label="Open navigation menu"
+                    aria-expanded="false" aria-controls="nav-menu">
+                    <svg class="nav-icon nav-icon-menu" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        aria-hidden="true" focusable="false">
+                        <path d="M4 7h16M4 12h16M4 17h16" />
+                    </svg>
+                    <svg class="nav-icon nav-icon-close" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        aria-hidden="true" focusable="false">
+                        <path d="M6 6l12 12M18 6L6 18" />
+                    </svg>
+                </button>
+                <ul id="nav-menu">
+                    <li><a href="#stack">Stack</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <a class="lang-switch" href="./index-es.html" hreflang="es" lang="es"
+                    title="Ver esta página en español">
+                    <svg class="lang-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.6" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M3 12h18" />
+                        <path d="M12 3c2.5 2.7 2.5 15.3 0 18" />
+                        <path d="M12 3c-2.5 2.7-2.5 15.3 0 18" />
+                    </svg>
+                    ES
+                </a>
+                <button class="theme-toggle" type="button" aria-label="Switch between light and dark mode" title="Switch between light and dark mode">
+                    <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" />
+                    </svg>
+                    <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4.2" />
+                        <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2" />
+                        <path d="m4.9 4.9 1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4" />
+                    </svg>
+                </button>
         </div>
-    </nav>
+        </nav>
+    </header>
 
-    <main>
-    <section class="hero">
-        <div class="hero-text">
-            <h1>Adrián Alcocer</h1>
-            <p class="hero-role">Backend Developer — Java &amp; C#</p>
-            <p class="hero-summary">Building REST and GraphQL APIs with AI integrations,
-                modernizing legacy services, and deploying to AWS
-                with Docker and Kubernetes.</p>
+    <main id="main" tabindex="-1">
+        <section class="hero">
+            <div class="hero-text">
+                <h1>Adrián Alcocer</h1>
+                <p class="hero-role">Backend Developer — Java &amp; C#</p>
+                <p class="hero-summary">Building REST and GraphQL APIs with AI integrations,
+                    modernizing legacy services, and deploying to AWS
+                    with Docker and Kubernetes.</p>
 
-            <div class="hero-actions">
-                <a class="btn btn-primary" href="./assets/docs/CV_English_Version.pdf" download>
-                    Download CV</a>
-                <a class="btn" href="https://linkedin.com/in/jesus-adrian-alcocer-dnz"
-                    target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                <a class="btn" href="mailto:jadriandev10@gmail.com">Email</a>
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="./assets/docs/CV_English_Version.pdf" download>
+                        Download CV</a>
+                    <a class="btn" href="https://linkedin.com/in/jesus-adrian-alcocer-dnz"
+                        target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a class="btn" href="mailto:jadriandev10@gmail.com">Email</a>
+                </div>
             </div>
-        </div>
-        <div class="hero-picture">
-            <img src="./assets/images/adrian_hero.jpg" alt="Adrián Alcocer" width="624" height="693">
-        </div>
-    </section>
-    <section class="stack" id="stack">
-        <h2>Tech Stack</h2>
-
-        <dl class="stack-grid">
-            <div class="stack-card">
-                <dt>Building services</dt>
-                <dd>
-                    <ul class="chips">
-                        <li class="chip"><img src="./assets/icons/tech/java.svg" alt="" width="24" height="24">Java</li>
-                        <li class="chip"><img src="./assets/icons/tech/spring.svg" alt="" width="24" height="24">Spring</li>
-                        <li class="chip"><img src="./assets/icons/tech/csharp.svg" alt="" width="24" height="24">C#</li>
-                        <li class="chip"><img src="./assets/icons/tech/dotnet.svg" alt="" width="24" height="24">.NET Framework</li>
-                        <li class="chip"><img src="./assets/icons/tech/graphql.svg" alt="" width="24" height="24">GraphQL</li>
-                        <li class="chip"><img src="./assets/icons/tech/grpc.svg" alt="" width="24" height="24">gRPC</li>
-                    </ul>
-                    <p class="chips-extra">REST APIs · SOAP Services</p>
-                </dd>
+            <div class="hero-picture">
+                <picture>
+                    <source srcset="./assets/images/adrian_hero.webp" type="image/webp">
+                    <img src="./assets/images/adrian_hero.jpg" alt="Adrián Alcocer"
+                        width="624" height="693" fetchpriority="high" decoding="sync">
+                </picture>
             </div>
+        </section>
+        <section class="stack" id="stack">
+            <h2>Tech Stack</h2>
 
-            <div class="stack-card">
-                <dt>Data</dt>
-                <dd>
-                    <ul class="chips">
-                        <li class="chip"><img src="./assets/icons/tech/sqlserver.svg" alt="" width="24" height="24">SQL Server</li>
-                        <li class="chip"><img src="./assets/icons/tech/postgresql.svg" alt="" width="24" height="24">PostgreSQL</li>
-                        <li class="chip"><img src="./assets/icons/tech/redis.svg" alt="" width="24" height="24">Redis</li>
-                        <li class="chip"><img src="./assets/icons/tech/liquibase.svg" alt="" width="24" height="24">Liquibase</li>
-                    </ul>
-                </dd>
-            </div>
+            <dl class="stack-grid">
+                <div class="stack-card">
+                    <dt>Building services</dt>
+                    <dd>
+                        <ul class="chips">
+                            <li class="chip"><img src="./assets/icons/tech/java.svg" alt="" width="20" height="20" loading="lazy" decoding="async">Java</li>
+                            <li class="chip"><img src="./assets/icons/tech/spring.svg" alt="" width="20" height="20" loading="lazy" decoding="async">Spring</li>
+                            <li class="chip"><img src="./assets/icons/tech/csharp.svg" alt="" width="20" height="20" loading="lazy" decoding="async">C#</li>
+                            <li class="chip"><img src="./assets/icons/tech/dotnet.svg" alt="" width="20" height="20" loading="lazy" decoding="async">.NET Framework</li>
+                            <li class="chip"><img src="./assets/icons/tech/graphql.svg" alt="" width="20" height="20" loading="lazy" decoding="async">GraphQL</li>
+                            <li class="chip"><img class="icon-light" src="./assets/icons/tech/grpc.svg" alt="" width="20" height="20" loading="lazy" decoding="async"><img class="icon-dark" src="./assets/icons/tech/grpc-dark.svg" alt="" width="20" height="20" loading="lazy" decoding="async">gRPC</li>
+                        </ul>
+                        <p class="chips-extra">REST APIs · SOAP Services</p>
+                    </dd>
+                </div>
 
-            <div class="stack-card">
-                <dt>Shipping &amp; infrastructure</dt>
-                <dd>
-                    <ul class="chips">
-                        <li class="chip"><img src="./assets/icons/tech/docker.svg" alt="" width="24" height="24">Docker</li>
-                        <li class="chip"><img src="./assets/icons/tech/kubernetes.svg" alt="" width="24" height="24">Kubernetes</li>
-                        <li class="chip"><img src="./assets/icons/tech/aws.svg" alt="" width="24" height="24">AWS (ECR, EKS)</li>
-                        <li class="chip"><img src="./assets/icons/tech/jenkins.svg" alt="" width="24" height="24">Jenkins</li>
-                        <li class="chip"><img src="./assets/icons/tech/bitbucket.svg" alt="" width="24" height="24">Bitbucket Pipelines</li>
-                        <li class="chip"><img src="./assets/icons/tech/git.svg" alt="" width="24" height="24">Git</li>
-                        <li class="chip"><img src="./assets/icons/tech/sonatype-nexus-repository.svg" alt="" width="24" height="24">Nexus</li>
-                    </ul>
-                </dd>
-            </div>
+                <div class="stack-card">
+                    <dt>Data</dt>
+                    <dd>
+                        <ul class="chips">
+                            <li class="chip"><img src="./assets/icons/tech/sqlserver.svg" alt="" width="20" height="20" loading="lazy" decoding="async">SQL Server</li>
+                            <li class="chip"><img src="./assets/icons/tech/postgresql.svg" alt="" width="20" height="20" loading="lazy" decoding="async">PostgreSQL</li>
+                            <li class="chip"><img src="./assets/icons/tech/redis.svg" alt="" width="20" height="20" loading="lazy" decoding="async">Redis</li>
+                            <li class="chip"><img src="./assets/icons/tech/liquibase.svg" alt="" width="20" height="20" loading="lazy" decoding="async">Liquibase</li>
+                        </ul>
+                    </dd>
+                </div>
 
-            <div class="stack-card">
-                <dt>AI</dt>
-                <dd>
-                    <ul class="chips">
-                        <li class="chip"><img src="./assets/icons/tech/devin-color.svg" alt="" width="24" height="24">Devin</li>
-                        <li class="chip"><img src="./assets/icons/tech/claude.svg" alt="" width="24" height="24">Claude</li>
-                    </ul>
-                    <p class="chips-extra">Third-party AI service integration</p>
-                </dd>
-            </div>
-        </dl>
-    </section>
-    <section class="experience" id="experience">
-        <h2>Experience</h2>
+                <div class="stack-card">
+                    <dt>Shipping &amp; infrastructure</dt>
+                    <dd>
+                        <ul class="chips">
+                            <li class="chip"><img src="./assets/icons/tech/docker.svg" alt="" width="20" height="20" loading="lazy" decoding="async">Docker</li>
+                            <li class="chip"><img src="./assets/icons/tech/kubernetes.svg" alt="" width="20" height="20" loading="lazy" decoding="async">Kubernetes</li>
+                            <li class="chip"><img src="./assets/icons/tech/aws.svg" alt="" width="20" height="20" loading="lazy" decoding="async">AWS (ECR, EKS)</li>
+                            <li class="chip"><img src="./assets/icons/tech/jenkins.svg" alt="" width="20" height="20" loading="lazy" decoding="async">Jenkins</li>
+                            <li class="chip"><img src="./assets/icons/tech/bitbucket.svg" alt="" width="20" height="20" loading="lazy" decoding="async">Bitbucket Pipelines</li>
+                            <li class="chip"><img src="./assets/icons/tech/git.svg" alt="" width="20" height="20" loading="lazy" decoding="async">Git</li>
+                            <li class="chip"><img src="./assets/icons/tech/sonatype-nexus-repository.svg" alt="" width="20" height="20" loading="lazy" decoding="async">Nexus</li>
+                        </ul>
+                    </dd>
+                </div>
 
-        <article class="job">
-            <header class="job-header">
-                <h3 class="job-company">Banco BASE — Grupo Financiero Base</h3>
-                <p class="job-meta">Monterrey, Mexico · June 2022 – Present</p>
+                <div class="stack-card">
+                    <dt>AI</dt>
+                    <dd>
+                        <ul class="chips">
+                            <li class="chip"><img src="./assets/icons/tech/devin-color.svg" alt="" width="20" height="20" loading="lazy" decoding="async">Devin</li>
+                            <li class="chip"><img src="./assets/icons/tech/claude.svg" alt="" width="20" height="20" loading="lazy" decoding="async">Claude</li>
+                        </ul>
+                        <p class="chips-extra">Third-party AI service integration</p>
+                    </dd>
+                </div>
+            </dl>
+        </section>
+        <section class="experience" id="experience">
+            <h2>Experience</h2>
+
+            <article class="job">
+                <header class="job-header">
+                    <h3 class="job-company">Banco BASE — Grupo Financiero Base</h3>
+                    <p class="job-meta">Monterrey, Mexico · June 2022 – Present</p>
             </header>
 
             <ol class="roles">
@@ -243,10 +373,10 @@
                     through Swagger UI.</p>
 
                 <ul class="chips">
-                    <li class="chip"><img src="./assets/icons/tech/java.svg" alt="" width="24" height="24">Java</li>
-                    <li class="chip"><img src="./assets/icons/tech/spring.svg" alt="" width="24" height="24">Spring WebFlux</li>
-                    <li class="chip"><img src="./assets/icons/tech/postgresql.svg" alt="" width="24" height="24">PostgreSQL</li>
-                    <li class="chip"><img src="./assets/icons/tech/docker.svg" alt="" width="24" height="24">Docker</li>
+                    <li class="chip"><img src="./assets/icons/tech/java.svg" alt="" width="20" height="20" loading="lazy" decoding="async">Java</li>
+                    <li class="chip"><img src="./assets/icons/tech/spring.svg" alt="" width="20" height="20" loading="lazy" decoding="async">Spring WebFlux</li>
+                    <li class="chip"><img src="./assets/icons/tech/postgresql.svg" alt="" width="20" height="20" loading="lazy" decoding="async">PostgreSQL</li>
+                    <li class="chip"><img src="./assets/icons/tech/docker.svg" alt="" width="20" height="20" loading="lazy" decoding="async">Docker</li>
                 </ul>
                 <p class="chips-extra">R2DBC · MapStruct · OpenAPI 3.1</p>
 
@@ -257,9 +387,6 @@
             </div>
 
             <div class="project-preview">
-                <div class="preview-head">
-                    <span class="preview-title">ProductRouterConfiguration.java</span>
-                </div>
                 <ul class="endpoints">
                     <li><span class="method method-get">GET</span><code>/api/products/</code></li>
                     <li><span class="method method-get">GET</span><code>/api/products/{id}</code></li>
@@ -267,7 +394,6 @@
                     <li><span class="method method-put">PUT</span><code>/api/products/{id}</code></li>
                     <li><span class="method method-delete">DELETE</span><code>/api/products/{id}</code></li>
                 </ul>
-                <p class="preview-foot">Swagger UI · localhost:9091/swagger-ui.html</p>
             </div>
         </article>
     </section>
@@ -354,6 +480,10 @@
         </ul>
     </section>
     </main>
+
+    <footer>
+        <p>&copy; 2026 Adrián Alcocer</p>
+    </footer>
 
     <!-- Sin defer a propósito: debe correr antes del primer pintado. -->
     <script src="./scripts/main.js"></script>
