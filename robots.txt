@@ -1,0 +1,5 @@
+# Adrián Alcocer — sitio personal
+User-agent: *
+Allow: /
+
+Sitemap: https://jesus-adrian-ad.github.io/personal-landing-page/sitemap.xml
