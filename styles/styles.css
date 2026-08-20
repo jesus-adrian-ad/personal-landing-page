@@ -54,7 +54,11 @@ a {
   --text-md:  1.25rem;
   --text-lg:  1.5rem;
   --text-xl:  2rem;
-  --text-3xl: 3.5rem;
+
+  /* Fluido: 36px en un iPhone SE, 56px de 700px en adelante. Evita el
+     salto brusco que daba un breakpoint y cubre todos los anchos de
+     iPhone (375 / 390 / 393 / 402 / 430 / 440) sin casos especiales. */
+  --text-3xl: clamp(2.25rem, 7vw, 3.5rem);
 
   --leading-tight: 1.1;
   --leading-snug:  1.3;
@@ -67,7 +71,17 @@ a {
   --tracking-tight: -0.02em;
   --tracking-wide:   0.08em;
 
-  /* Color */
+  /* Movimiento. La curva expo arranca rápido y frena muy largo: es lo que
+     separa una animación que se siente cara de un ease-out genérico. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-soft: cubic-bezier(0.33, 1, 0.68, 1);
+  --dur-fast:   0.18s;
+  --dur-normal: 0.35s;
+  --dur-slow:   0.75s;
+
+  /* Color — modo claro (ver BLOQUE 1.2 para el oscuro) */
+  color-scheme: light;
+
   --bg:        #ffffff;
   --bg-alt:    #f6f7f9;
   --ink:       #16181c;
@@ -75,10 +89,62 @@ a {
   --accent:    #16324f;
   --border:    #e4e7ec;
 
+  /* El panel de código del proyecto es oscuro en los dos modos, así que
+     lleva sus propios tokens y no depende de --ink / --bg. */
+  --panel-bg:        #16181c;
+  --panel-ink:       rgba(255, 255, 255, 0.85);
+  --panel-ink-muted: rgba(255, 255, 255, 0.45);
+  --panel-border:    rgba(255, 255, 255, 0.12);
+
+  --shadow: rgba(0, 0, 0, 0.06);
+
   /* Layout */
   --container: 1120px;
   --measure:   640px;
   --nav-height: 72px;
+}
+
+
+/* =====================================================================
+   BLOQUE 1.2 — Modo oscuro
+   Tres estados: sin elegir nada manda el sistema; data-theme="dark" y
+   data-theme="light" son la elección explícita del usuario y ganan sobre
+   el sistema en ambos sentidos. Solo se redefinen tokens de color: ni un
+   solo componente sabe en qué modo está.
+   ===================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --bg:        #0f1216;
+    --bg-alt:    #171b21;
+    --ink:       #e7eaee;
+    --ink-muted: #a2abb8;
+    --accent:    #7cb3e8;
+    --border:    #272d36;
+
+    --panel-bg:     #0a0c0f;
+    --panel-border: rgba(255, 255, 255, 0.10);
+
+    --shadow: rgba(0, 0, 0, 0.5);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg:        #0f1216;
+  --bg-alt:    #171b21;
+  --ink:       #e7eaee;
+  --ink-muted: #a2abb8;
+  --accent:    #7cb3e8;
+  --border:    #272d36;
+
+  --panel-bg:     #0a0c0f;
+  --panel-border: rgba(255, 255, 255, 0.10);
+
+  --shadow: rgba(0, 0, 0, 0.5);
 }
 
 
@@ -125,15 +191,24 @@ p {
 .hero,
 .stack,
 .experience,
+.projects,
 .about,
 .contact {
   max-width: var(--container);
   margin-inline: auto;
   padding: var(--space-8) var(--space-4);
+
+  /* En iPhone apaisado el notch invade un lateral. Con viewport-fit=cover
+     en el <meta>, env() devuelve ese hueco; max() se queda con el mayor
+     entre el padding normal y la zona segura, así que en el resto de
+     dispositivos (donde env() es 0) no cambia nada. */
+  padding-left: max(var(--space-4), env(safe-area-inset-left));
+  padding-right: max(var(--space-4), env(safe-area-inset-right));
 }
 
 .stack h2,
 .experience h2,
+.projects h2,
 .about h2 {
   margin-bottom: var(--space-6);
 }
@@ -141,9 +216,56 @@ p {
 @media (max-width: 767px) {
   .stack,
   .experience,
+  .projects,
   .about,
   .contact {
     padding-block: var(--space-7);
+  }
+}
+
+
+/* =====================================================================
+   BLOQUE 1.8 — Pantallas grandes
+   En un monitor de 2560px el contenedor de 1120px deja el contenido en
+   el 44% del ancho y el resto en márgenes. Se escalan tokens en dos
+   pasos; ninguna regla de componente cambia.
+
+   El contenedor crece menos que la pantalla a propósito: --measure
+   (el ancho del texto corrido) sube solo lo justo para mantener ~80
+   caracteres por línea al crecer también la tipografía. Estirar el
+   texto a todo lo ancho se lee peor, no mejor.
+   ===================================================================== */
+
+@media (min-width: 1600px) {
+  :root {
+    --container: 1280px;
+    --measure:    680px;
+
+    --text-xs:  0.9375rem;
+    --text-sm:  1.0625rem;
+    --text-md:  1.3125rem;
+    --text-lg:  1.625rem;
+    --text-xl:  2.25rem;
+    --text-3xl: 4rem;
+  }
+}
+
+@media (min-width: 2100px) {
+  :root {
+    --container: 1440px;
+    --measure:    720px;
+
+    --text-xs:  1rem;
+    --text-sm:  1.125rem;
+    --text-md:  1.4375rem;
+    --text-lg:  1.75rem;
+    --text-xl:  2.5rem;
+    --text-3xl: 4.5rem;
+
+    --space-8: 128px;
+    --space-9: 176px;
+
+    --nav-height: 84px;
   }
 }
 
@@ -156,11 +278,13 @@ nav {
   position: sticky;
   top: 0;
   z-index: 10;
+  transition: box-shadow 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: var(--nav-height);
-  padding-inline: var(--space-4);
+  padding-left: max(var(--space-4), env(safe-area-inset-left));
+  padding-right: max(var(--space-4), env(safe-area-inset-right));
   background: var(--bg);
   border-bottom: 1px solid var(--border);
 }
@@ -170,6 +294,12 @@ nav {
   font-size: var(--text-md);
   font-weight: 600;
   color: var(--accent);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
 }
 
 nav ul {
@@ -182,14 +312,155 @@ nav a:focus-visible {
   color: var(--accent);
 }
 
+/* --- Cambio de idioma --- */
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--ink-muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.lang-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* --- Cambio de tema --- */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  color: var(--ink-muted);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.theme-icon {
+  width: 17px;
+  height: 17px;
+}
+
+/* Se muestra el icono del modo al que se va, no el del modo actual:
+   en claro se ve la luna, en oscuro el sol. */
+.theme-icon-sun {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-icon-sun  { display: block; }
+  :root:not([data-theme="light"]) .theme-icon-moon { display: none; }
+}
+
+:root[data-theme="dark"] .theme-icon-sun  { display: block; }
+:root[data-theme="dark"] .theme-icon-moon { display: none; }
+
 section {
   scroll-margin-top: var(--nav-height);
 }
 
-@media (max-width: 767px) {
+/* --- Botón hamburguesa --- */
+
+/* Solo existe en móvil y tablet vertical; en escritorio los enlaces se ven. */
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.nav-icon {
+  width: 22px;
+  height: 22px;
+}
+
+/* El icono lo decide el estado ARIA: una sola fuente de verdad para
+   lo que ve el usuario y lo que anuncia el lector de pantalla. */
+.nav-toggle[aria-expanded="true"] .nav-icon-menu,
+.nav-toggle[aria-expanded="false"] .nav-icon-close {
+  display: none;
+}
+
+
+/* --- Navbar en móvil y tablet vertical ---
+   El corte es 900px y no 767px porque los enlaces en español
+   ("Experiencia", "Proyectos"…) desbordan antes que los ingleses. */
+
+@media (max-width: 900px) {
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  /* Los enlaces pasan a ser un panel desplegable bajo la barra.
+     nav es sticky, o sea posicionado, así que sirve de referencia. */
   nav ul {
-    gap: var(--space-3);
-    font-size: var(--text-xs);
+    display: none;
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    padding-block: var(--space-2);
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 10px 24px var(--shadow);
+  }
+
+  nav ul.is-open {
+    display: flex;
+  }
+
+  /* Enlaces a lo ancho y con alto de dedo (48px). */
+  nav ul a {
+    display: block;
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
+@media (max-width: 767px) {
+  .nav-right {
+    gap: var(--space-2);
+  }
+
+  /* El globo se cae para que el navbar quepa; el código de idioma basta. */
+  .lang-icon {
+    display: none;
+  }
+
+  .lang-switch {
+    padding-inline: var(--space-3);
+  }
+
+  /* Objetivo táctil más holgado en pantallas de teléfono. */
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
   }
 }
 
@@ -201,7 +472,7 @@ section {
 
 .hero {
   display: grid;
-  grid-template-columns: 1fr minmax(280px, 400px);
+  grid-template-columns: 1fr minmax(220px, 300px);
   align-items: center;
   gap: var(--space-8);
   padding-block: var(--space-9);   /* más aire que el resto de secciones */
@@ -276,13 +547,19 @@ section {
 
 /* --- Columna derecha: foto --- */
 
+/* El tope vive aquí y no solo en la columna del grid: así la foto no puede
+   crecer aunque cambie el layout. Ancho y alto quedan atados por el ratio. */
 .hero-picture {
   margin: 0;
+  width: 100%;
+  max-width: 300px;
+  justify-self: end;
 }
 
 .hero-picture img {
   display: block;
   width: 100%;
+  height: auto;
   aspect-ratio: 9 / 10;
   object-fit: cover;
   border-radius: 50%;   /* óvalo: sigue la proporción 9/10 del contenedor */
@@ -292,6 +569,29 @@ section {
 
 /* --- Hero responsive --- */
 
+/* Con el contenedor más ancho, una foto de 300px deja un hueco entre el
+   texto (topado a --measure) y el borde derecho. Crece con él. */
+
+@media (min-width: 1600px) {
+  .hero {
+    grid-template-columns: 1fr minmax(260px, 360px);
+  }
+
+  .hero-picture {
+    max-width: 360px;
+  }
+}
+
+@media (min-width: 2100px) {
+  .hero {
+    grid-template-columns: 1fr minmax(300px, 420px);
+  }
+
+  .hero-picture {
+    max-width: 420px;
+  }
+}
+
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
@@ -299,13 +599,10 @@ section {
     padding-block: var(--space-7);
   }
 
-  .hero-text h1 {
-    font-size: var(--text-xl);
-  }
-
   .hero-picture {
     order: -1;
-    max-width: 320px;
+    max-width: 240px;
+    justify-self: start;   /* en una columna se alinea con el texto, no a la derecha */
   }
 }
 
@@ -373,6 +670,19 @@ section {
   height: 20px;
   object-fit: contain;
   flex-shrink: 0;
+}
+
+/* devicon dibuja el icono de gRPC en negro sólido, invisible sobre fondo
+   oscuro. En ese modo se cambia por la variante blanca del mismo set.
+   Es el único logo del stack sin colores propios. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .chip img[src$="grpc.svg"] {
+    content: url("../assets/icons/tech/grpc-dark.svg");
+  }
+}
+
+:root[data-theme="dark"] .chip img[src$="grpc.svg"] {
+  content: url("../assets/icons/tech/grpc-dark.svg");
 }
 
 /* Tecnologías sin logo propio: van como texto suelto bajo los chips. */
@@ -515,6 +825,139 @@ section {
     flex-direction: column-reverse;
     align-items: flex-start;
     gap: var(--space-1);
+  }
+}
+
+
+/* =====================================================================
+   BLOQUE 5.5 — Projects
+   Tarjeta ancha a dos columnas: descripción y stack a la izquierda,
+   la superficie de la API como vista previa a la derecha. Para pasar a
+   un grid de varias tarjetas basta con envolver los .project en un
+   contenedor con grid-template-columns y quitar las dos columnas de aquí.
+   ===================================================================== */
+
+.project {
+  display: grid;
+  grid-template-columns: 1fr minmax(300px, 420px);
+  gap: var(--space-6);
+  padding: var(--space-5);
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--space-3);
+}
+
+/* --- Columna izquierda: información --- */
+
+.project-title {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-3);
+}
+
+.project-desc {
+  max-width: var(--measure);
+  color: var(--ink-muted);
+}
+
+.project-desc + .project-desc {
+  margin-top: var(--space-3);
+}
+
+.project-desc code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: var(--ink);
+}
+
+.project-info .chips {
+  margin-top: var(--space-5);
+}
+
+.project-actions {
+  margin-top: var(--space-5);
+}
+
+/* --- Columna derecha: vista previa de la API --- */
+
+.project-preview {
+  /* Colores de verbo HTTP: solo viven aquí, no son tokens globales. */
+  --method-get:    #6ea8fe;
+  --method-post:   #6ee7a8;
+  --method-put:    #f0b95c;
+  --method-delete: #f08c8c;
+
+  align-self: start;
+  padding: var(--space-4);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--space-2);
+  overflow: hidden;
+}
+
+.preview-head {
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.preview-title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--panel-ink-muted);
+}
+
+.endpoints {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.endpoints li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  color: var(--panel-ink);
+}
+
+.endpoints code {
+  font-family: inherit;
+  word-break: break-all;
+}
+
+.method {
+  flex-shrink: 0;
+  width: 4.5em;
+  font-weight: 600;
+}
+
+.method-get    { color: var(--method-get); }
+.method-post   { color: var(--method-post); }
+.method-put    { color: var(--method-put); }
+.method-delete { color: var(--method-delete); }
+
+.preview-foot {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--panel-border);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--panel-ink-muted);
+}
+
+
+/* --- Projects responsive --- */
+
+@media (max-width: 900px) {
+  .project {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+}
+
+@media (max-width: 767px) {
+  .project {
+    padding: var(--space-4);
   }
 }
 
@@ -691,5 +1134,212 @@ section {
     grid-row: span 2;
     align-self: start;
     margin-top: var(--space-1);
+  }
+}
+
+
+/* =====================================================================
+   BLOQUE 8 — Movimiento
+   Cuatro piezas: entrada del hero, revelado de secciones, estados de los
+   elementos interactivos y el indicador de sección activa en el navbar.
+
+   Todo el movimiento usa --ease-out-expo y solo anima opacity, transform
+   y filter: son las tres propiedades que el navegador resuelve en la GPU
+   sin recalcular layout. Nada anima height, width ni margin.
+   ===================================================================== */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+/* --- Hero: entra solo, sin JS ---
+   Va con @keyframes y no con el observador de scroll porque está sobre la
+   línea de flotación: el CSS ya está aplicado en el primer pintado, así
+   que no hay parpadeo. `backwards` lo mantiene oculto durante el retraso. */
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-text > *,
+  .hero-picture {
+    animation: rise var(--dur-slow) var(--ease-out-expo) backwards;
+  }
+
+  .hero-text > :nth-child(1) { animation-delay: 0.06s; }
+  .hero-text > :nth-child(2) { animation-delay: 0.14s; }
+  .hero-text > :nth-child(3) { animation-delay: 0.22s; }
+  .hero-text > :nth-child(4) { animation-delay: 0.30s; }
+  .hero-picture              { animation-delay: 0.18s; }
+}
+
+/* --- Secciones: revelado al entrar en pantalla ---
+   La clase .reveal la añade scripts/main.js. Sin JS nunca se aplica y el
+   contenido queda visible, así que esto no puede dejar la página en blanco. */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  filter: blur(6px);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+  transition:
+    opacity   var(--dur-slow) var(--ease-out-expo),
+    transform var(--dur-slow) var(--ease-out-expo),
+    filter    var(--dur-slow) var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* --- Navbar al hacer scroll --- */
+
+nav.is-scrolled {
+  box-shadow: 0 1px 12px var(--shadow);
+}
+
+/* --- Sección activa en el navbar ---
+   El subrayado crece desde la izquierda al pasar el ratón y se queda fijo
+   en la sección que estás viendo. Se dibuja con un pseudoelemento escalado
+   en X: animar transform no provoca reflow, animar width sí. */
+
+@media (min-width: 901px) {
+  nav ul a {
+    position: relative;
+  }
+
+  nav ul a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 1.5px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-normal) var(--ease-out-expo);
+  }
+
+  nav ul a:hover::after,
+  nav ul a:focus-visible::after,
+  nav ul a.is-active::after {
+    transform: scaleX(1);
+  }
+
+  nav ul a.is-active {
+    color: var(--accent);
+  }
+}
+
+/* En el panel desplegable el enlace activo se marca con una barra lateral:
+   un subrayado no se lee en una lista vertical. */
+@media (max-width: 900px) {
+  nav ul a.is-active {
+    color: var(--accent);
+    box-shadow: inset 2px 0 0 var(--accent);
+  }
+}
+
+/* --- Estados de los elementos interactivos ---
+   Solo llevan movimiento los que de verdad llevan a algún lado. Las
+   tarjetas y los chips no responden al hover a propósito: no son clicables
+   y fingir que lo son confunde. */
+
+.btn {
+  transition:
+    color            var(--dur-fast) var(--ease-out-soft),
+    background-color var(--dur-fast) var(--ease-out-soft),
+    border-color     var(--dur-fast) var(--ease-out-soft),
+    transform        var(--dur-fast) var(--ease-out-soft),
+    box-shadow       var(--dur-normal) var(--ease-out-soft);
+}
+
+.btn:hover,
+.btn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--shadow);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: none;
+}
+
+.contact-link:active,
+.theme-toggle:active,
+.lang-switch:active,
+.nav-toggle:active {
+  transform: scale(0.97);
+}
+
+.theme-toggle,
+.lang-switch,
+.nav-toggle {
+  transition:
+    color        var(--dur-fast) var(--ease-out-soft),
+    border-color var(--dur-fast) var(--ease-out-soft),
+    transform    var(--dur-fast) var(--ease-out-soft);
+}
+
+/* El icono del tema gira al cambiar de modo. */
+.theme-icon {
+  transition: transform var(--dur-normal) var(--ease-out-expo);
+}
+
+.theme-toggle:hover .theme-icon {
+  transform: rotate(25deg);
+}
+
+/* --- Cambio de tema ---
+   Sin esto el salto claro/oscuro es un corte seco. La clase la pone y la
+   quita el JS solo durante el cambio: dejar una transición permanente en
+   `*` penalizaría el scroll y el hover de toda la página. */
+
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  /* El !important va una sola vez, al final: aplica a toda la declaración. */
+  transition:
+    background-color var(--dur-normal) var(--ease-out-soft),
+    border-color     var(--dur-normal) var(--ease-out-soft),
+    color            var(--dur-normal) var(--ease-out-soft) !important;
+}
+
+/* --- Respeto por prefers-reduced-motion ---
+   El JS ya evita marcar nada, pero esto cubre el caso de que el ajuste
+   cambie con la página abierta. */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;   /* el scroll animado también es movimiento */
+  }
+
+  .reveal,
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+
+  .btn:hover,
+  .btn:focus-visible,
+  .btn:active,
+  .contact-link:active,
+  .theme-toggle:active,
+  .lang-switch:active,
+  .nav-toggle:active,
+  .theme-toggle:hover .theme-icon {
+    transform: none;
   }
 }
