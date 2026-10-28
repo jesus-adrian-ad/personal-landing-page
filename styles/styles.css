@@ -97,10 +97,10 @@ main:focus {
   --text-lg:  1.5rem;
   --text-xl:  2rem;
 
-  /* Fluido: 36px en un iPhone SE, 56px de 700px en adelante. Evita el
+  /* Fluido: 40px en un iPhone SE, 64px de 700px en adelante. Evita el
      salto brusco que daba un breakpoint y cubre todos los anchos de
      iPhone (375 / 390 / 393 / 402 / 430 / 440) sin casos especiales. */
-  --text-3xl: clamp(2.25rem, 7vw, 3.5rem);
+  --text-3xl: clamp(2.5rem, 8vw, 4rem);
 
   --leading-tight: 1.1;
   --leading-snug:  1.3;
@@ -117,6 +117,9 @@ main:focus {
      separa una animación que se siente cara de un ease-out genérico. */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-soft: cubic-bezier(0.33, 1, 0.68, 1);
+  /* Rebasa el 100% y regresa: es lo que lee como "rebote" sin necesitar
+     varios pasos en el keyframe. Solo se usa en el h1 del hero. */
+  --ease-bounce:   cubic-bezier(0.34, 1.56, 0.64, 1);
   --dur-fast:   0.18s;
   --dur-normal: 0.35s;
   --dur-slow:   0.75s;
@@ -288,7 +291,7 @@ p {
     --text-md:  1.3125rem;
     --text-lg:  1.625rem;
     --text-xl:  2.25rem;
-    --text-3xl: 4rem;
+    --text-3xl: 4.5rem;
   }
 }
 
@@ -302,7 +305,7 @@ p {
     --text-md:  1.4375rem;
     --text-lg:  1.75rem;
     --text-xl:  2.5rem;
-    --text-3xl: 4.5rem;
+    --text-3xl: 5rem;
 
     --space-8: 128px;
     --space-9: 176px;
@@ -521,21 +524,27 @@ section {
 
 /* =====================================================================
    BLOQUE 12 — Hero
-   Dos columnas: texto a la izquierda, foto a la derecha.
+   Una sola columna centrada, sin foto — inspirado en helloabdullah.com:
+   rol como badge tipo pill, título grande, CTA centrados.
    ===================================================================== */
 
 .hero {
-  display: grid;
-  grid-template-columns: 1fr minmax(220px, 300px);
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--space-8);
+  justify-content: center;
+  /* Llena lo que queda de pantalla debajo del navbar, para que el
+     contenido quede centrado de verdad y la siguiente sección no se
+     asome antes de hacer scroll. min-height (no height): si el texto
+     necesita más espacio en una pantalla muy baja, crece sin recortarse. */
+  min-height: calc(100svh - var(--nav-height));
   padding-block: var(--space-9);   /* más aire que el resto de secciones */
+  text-align: center;
 }
-
-/* --- Columna izquierda: texto --- */
 
 .hero-text {
   max-width: var(--measure);
+  margin-inline: auto;
 }
 
 .hero-text h1 {
@@ -543,12 +552,15 @@ section {
 }
 
 .hero-role {
-  font-family: var(--font-display);
-  font-size: var(--text-md);
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-sm);
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 2px;
   color: var(--accent);
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: var(--space-2) var(--space-4);
   margin-bottom: var(--space-4);
 }
 
@@ -563,6 +575,7 @@ section {
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: var(--space-3);
   margin-top: var(--space-6);
 }
@@ -599,64 +612,11 @@ section {
   border-color: var(--ink);
 }
 
-/* --- Columna derecha: foto --- */
-
-/* El tope vive aquí y no solo en la columna del grid: así la foto no puede
-   crecer aunque cambie el layout. Ancho y alto quedan atados por el ratio. */
-.hero-picture {
-  margin: 0;
-  width: 100%;
-  max-width: 300px;
-  justify-self: end;
-}
-
-.hero-picture img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 9 / 10;
-  object-fit: cover;
-  border-radius: 50%;   /* óvalo: sigue la proporción 9/10 del contenedor */
-  border: 1px solid var(--border);
-}
-
-
 /* --- Hero responsive --- */
-
-/* Con el contenedor más ancho, una foto de 300px deja un hueco entre el
-   texto (topado a --measure) y el borde derecho. Crece con él. */
-
-@media (min-width: 1600px) {
-  .hero {
-    grid-template-columns: 1fr minmax(260px, 360px);
-  }
-
-  .hero-picture {
-    max-width: 360px;
-  }
-}
-
-@media (min-width: 2100px) {
-  .hero {
-    grid-template-columns: 1fr minmax(300px, 420px);
-  }
-
-  .hero-picture {
-    max-width: 420px;
-  }
-}
 
 @media (max-width: 900px) {
   .hero {
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
     padding-block: var(--space-7);
-  }
-
-  .hero-picture {
-    order: -1;
-    max-width: 240px;
-    justify-self: start;   /* en una columna se alinea con el texto, no a la derecha */
   }
 }
 
@@ -1212,31 +1172,44 @@ section {
   }
 }
 
+/* Rebote de entrada, solo para el h1 del hero. Tampoco toca opacity
+   (mismo motivo que rise-opaque: es el candidato a LCP). El rebote lo
+   da --ease-bounce, no el keyframe — por eso aquí solo hay dos pasos. */
+@keyframes bounce-in {
+  from {
+    transform: scale(0.4);
+    filter: blur(4px);
+  }
+  to {
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
 /* --- Hero: entra solo, sin JS ---
    Va con @keyframes y no con el observador de scroll porque está sobre la
    línea de flotación: el CSS ya está aplicado en el primer pintado, así
    que no hay parpadeo. `backwards` lo mantiene oculto durante el retraso. */
 
 @media (prefers-reduced-motion: no-preference) {
-  .hero-text > *,
-  .hero-picture {
+  .hero-text > * {
     animation: rise var(--dur-slow) var(--ease-out-expo) backwards;
   }
 
-  /* El h1 y la foto son los candidatos a elemento LCP, y Chrome no cuenta
-     como pintado nada con opacity 0: un fundido de entrada retrasa la
-     métrica lo que dure. Entran solo con desplazamiento y desenfoque, que
-     es donde vive el movimiento de todas formas. */
-  .hero-text > h1,
-  .hero-picture {
-    animation-name: rise-opaque;
+  /* El h1 es el candidato a elemento LCP, y Chrome no cuenta como pintado
+     nada con opacity 0: por eso bounce-in tampoco toca opacity, solo
+     escala y desenfoque. Duración más corta que el resto (0.5s en vez de
+     los 0.75s de --dur-slow): un rebote largo se siente lento, no elegante. */
+  .hero-text > h1 {
+    animation-name: bounce-in;
+    animation-duration: 0.5s;
+    animation-timing-function: var(--ease-bounce);
   }
 
   .hero-text > :nth-child(1) { animation-delay: 0.06s; }
   .hero-text > :nth-child(2) { animation-delay: 0.14s; }
   .hero-text > :nth-child(3) { animation-delay: 0.22s; }
   .hero-text > :nth-child(4) { animation-delay: 0.30s; }
-  .hero-picture              { animation-delay: 0.18s; }
 }
 
 /* --- Secciones: revelado al entrar en pantalla ---
